@@ -18,7 +18,7 @@
 | Phase | Effort | Window | Status |
 | --- | --- | --- | --- |
 | 0. Habit: Everything in English | ongoing | started | 🔄 In progress |
-| 1. Node.js Internals | ~25–30h | **Aug 27 – Sep 10, 2026** | 🔄 Restarted 2026-09-02 from the Event Loop, hands-on (0/6 topics coded) |
+| 1. Node.js Internals | ~25–30h | **Aug 27 – Sep 10, 2026** | 🔄 Restarted 2026-09-02 from the Event Loop, hands-on (1/6 topics coded) |
 | 2. Databases | ~25–30h | Sep 11 – Sep 24, 2026 | ⬜ Pending |
 | 3. Testing & Code Quality | ~20h | Sep 25 – Oct 5, 2026 | ⬜ Pending |
 | 4. Architecture in Practice | ~25–30h | Oct 6 – Oct 19, 2026 | ⬜ Pending |
@@ -66,7 +66,7 @@
 
 ### Topics
 
-- [ ] **Event Loop in depth** — microtasks vs macrotasks, `process.nextTick` vs `setImmediate` vs `setTimeout(0)`, starvation, why a 1-billion-iteration `for` freezes the whole server; what `await fetch()` does end-to-end (kernel async I/O vs the libuv thread pool) ← **RESTART HERE (2026-09-02)** *(theory quizzed 2026-07-28; tick removed — no code was written, rule 2)*
+- [x] **Event Loop in depth** — microtasks vs macrotasks, `process.nextTick` vs `setImmediate` vs `setTimeout(0)`, starvation, why a 1-billion-iteration `for` freezes the whole server; what `await fetch()` does end-to-end (kernel async I/O vs the libuv thread pool) *(ticked 2026-10-05: `00`/`01` coded and run, `notes/event-loop.md` written, quiz Q1/Q4/Q5 passed)*
 - [ ] **V8 and the Garbage Collector** — heap vs stack, generational GC (young gen / old gen / large object space), how V8 decides what to collect, when GC pauses your app (stop-the-world); how GC shows up in production (p99 spikes, `--trace-gc`, heap trend) *(theory quizzed 2026-07-28; tick removed — same reason)*
 - [ ] **Memory Leaks** — closures retaining references, unremoved event listeners, unconsumed buffers/streams, unbounded global caches, diagnosing with `--inspect` and Chrome DevTools
 - [ ] **Streams and Backpressure** — why `fs.readFile` on a 2GB file kills your process and `createReadStream` doesn't; readable/writable/transform/duplex; `pipeline()`; when to use them
