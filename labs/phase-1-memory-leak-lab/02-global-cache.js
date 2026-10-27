@@ -13,16 +13,37 @@ const globalCache = new Map();
 let iterationCount = 0;
 const mb = (n) => (n / 1024 / 1024).toFixed(1);
 
+const TTL = 1000 * 60; // 60 seconds
+const CLEANUP_INTERVAL = 1000 * 10; // 10 seconds
+const MAX_SIZE = 25;
+
 function loop() {
     iterationCount++;
     if (iterationCount % 1000 === 0) console.log(`iter ${iterationCount} | heapUsed: ${mb(process.memoryUsage().heapUsed)} MB`);
 
+    console.log(`globalCache size: ${globalCache.size}`);
+    if (globalCache.size >= MAX_SIZE) {
+        const oldestKey = globalCache.keys().next().value;
+        globalCache.delete(oldestKey);
+    }
+
     const uniqueKey = `key-${iterationCount}`;
+
     globalCache.set(uniqueKey, {
         data: new Array(10000).fill('some data'),
+        expiresAt: Date.now() + TTL,
     });
-
-    setImmediate(loop);
 }
 
-setImmediate(loop);
+setInterval(() => {
+    const now = Date.now();
+
+    for (const [key, value] of globalCache.entries()) {
+        if (value.expiresAt < now) {
+            globalCache.delete(key);
+        }
+    }
+
+}, CLEANUP_INTERVAL).unref();
+
+setInterval(loop, 1000);
