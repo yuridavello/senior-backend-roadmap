@@ -25,20 +25,17 @@ It died when the process reached the heap limit (~4 GB): FATAL ERROR: Reached he
 
 <!-- Top constructor, number of new objects, size delta. -->
 I took two snapshots 20 seconds apart.
-The top constructor was an Array. It showed 36 new instances and a size delta of +2.8MB.
+The top constructor was Array. It showed 36 new instances and a size delta of +2.8 MB.
 
 **Retainer chain:**
 
 <!-- One line per link, plus one sentence on why that link keeps the next one alive. -->
 
-1. elements in Array
-2. data in {data}
-3. 257 in internal array
-4. table in Map
-5. globalCache
-
-That link keeps the next one alive because they're referenced. From the bottom to the top, so as long as the bottom is still alive, the rest of the chain are still alive too.
-
+1. elements in Array -> the Array holds the store through its elements property
+2. data in {data} -> the entry object holds the Array through its data property
+3. 257 in internal array -> the hash table's internal array holds the entry object through slot 257
+4. table in Map -> the Map holds the hash table
+5. globalCache -> module-level variable, so it's a GC root that lives as long as the process does; it holds the map
 
 
 ### 3. Fix
@@ -50,7 +47,7 @@ But that wasn't enough: TTL limits age, not count. To fix that, I added a max si
 ### 4. After
 
 <!-- Numbers after the fix: size delta, cache size, heap. -->
-After the fix, size delta went to 0 KB and the cache size stayed at 25 entries.
+After the fix, the size delta went to 0 KB and the cache size stayed at 25 entries.
 
 ---
 
